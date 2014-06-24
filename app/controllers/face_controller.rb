@@ -32,10 +32,9 @@ class FaceController < ApplicationController
 			:text => text,
 			:language => "ja",	
 			:format => "audio/mp3"
-		}
-		p res.body
+		}		
+		render text: res.body
 	end
-
 
   	def access_token
   		conn = Faraday.new(:url => 'https://datamarket.accesscontrol.windows.net') do |builder|
@@ -48,7 +47,9 @@ class FaceController < ApplicationController
   			:scope => "http://api.microsofttranslator.com",
   			:grant_type => "client_credentials"
   		}
+
+  		# JSON -> HashMapに変換
   		r = ActiveSupport::JSON.decode(res.body)
-  		r['access_token']
+  		render text: r['access_token']
 	end
 end
