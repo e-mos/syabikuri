@@ -52,6 +52,7 @@ gem 'therubyracer'
 
 gem 'nokogiri', '~> 1.6.1'
 gem 'rails-i18n', '~> 4.0.1'
+gem 'faraday'
 group :test do
 	gem 'rspec-rails', '~> 3.0.0.beta2'
 	gem 'spring-commands-rspec', '~> 1.0.1'
