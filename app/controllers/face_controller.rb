@@ -18,23 +18,6 @@ class FaceController < ApplicationController
 	  	}
 	  	Nokogiri::XML(res.body)
 	end
-	
-	def speak
-		text = "こんにちわ"
-
-		conn = Faraday.new(:url => 'http://api.microsofttranslator.com/V2/Ajax.svc/') do |builder|
-			builder.request :url_encoded
-	  		builder.response :logger
-			builder.adapter :net_http
-		end
-		res = conn.get 'Speak', {
-			:appId => "Bearer" + " " + access_token,
-			:text => text,
-			:language => "ja",	
-			:format => "audio/mp3"
-		}		
-		render text: res.body
-	end
 
   	def access_token
   		conn = Faraday.new(:url => 'https://datamarket.accesscontrol.windows.net') do |builder|

@@ -39,7 +39,6 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'libv8'
 gem 'twitter-bootstrap-rails'
 gem 'less-rails-bootstrap'
-gem 'therubyracer'
 
 # Use unicorn as the app server
 # gem 'unicorn'
