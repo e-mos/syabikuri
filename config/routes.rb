@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+
+  root :to => 'face#index'
+
   get 'face/index'
   get 'face/parse'
   get 'face/speak'
