@@ -18,6 +18,7 @@ $(document).ready(function() {
         this.mp3 = mp3;
       },
       drawBase : function() {
+        this.img.id = "face_image";
         this.img.style.position ="absolute";
         this.img.style.zIndex ="0";
         $("#face_view").append(this.img);
@@ -45,8 +46,9 @@ $(document).ready(function() {
         context.closePath();
         context.clip();
 
-        img.onload = function() {
-            context.drawImage(img, 0, 0);
+        var self = this;
+        this.img.onload = function() {
+          context.drawImage(self.img, 0, 0);
         }
 
         moveMouth($(canvas));
@@ -55,7 +57,10 @@ $(document).ready(function() {
         // TODO: 音声を乗っけて、終わったら口パクを止める
       },
       speak : function() {
-        // TODO: drawBase、drawMouthBackGround、drawMovingMouth、playAudioをカプセル化してここで呼びたい
+        this.drawBase();
+        this.drawMouthBackGround();
+        this.drawMovingMouth();
+        this.playAudio();
       }
     }
 
@@ -68,26 +73,24 @@ $(document).ready(function() {
         .animate({top : moveSize}, {duration : 300, complete : function() {moveMouth(obj)}});
     }
 
-    var img = new Image();
-    img.src = "obama.jpg";
-    var face = new Face();
-    face.setImage(img);
-    face.setPosition(157, 557, 298, 570, 674);
-    face.drawBase();
-    face.drawMovingMouth();
-    face.drawMouthBackGround();
-
-    // TODO: 動的にCANVASのサイズを変えたい
-    // img.onload = function() {
-    //   console.log(img.width);
-    //   console.log(img.height);
-    //   $("#mouth_bg").get(0).style.width = img.width + "px";
-    //   $("#mouth_bg").get(0).style.height = img.height + "px";
-    //   $("#moving_mouth").get(0).style.width = img.width + "px";
-    //   $("#moving_mouth").get(0).style.height = img.height + "px";
-    // }
-
     $("#speak").bind("click", function() {
+      var face_img = new Image();
+      face_img.src = "obama.jpg";
+      var face = new Face();
+      face.setImage(face_img);
+      face.setPosition(157, 557, 298, 570, 674);
+      face.speak();
+
+      // TODO: 動的にCANVASのサイズを変えたい
+      // img.onload = function() {
+      //   console.log(img.width);
+      //   console.log(img.height);
+      //   $("#mouth_bg").get(0).style.width = img.width + "px";
+      //   $("#mouth_bg").get(0).style.height = img.height + "px";
+      //   $("#moving_mouth").get(0).style.width = img.width + "px";
+      //   $("#moving_mouth").get(0).style.height = img.height + "px";
+      // }
+
       $("#operation_view").css("display", "none");
       $("#face_view").css("display", "inline");
     });
