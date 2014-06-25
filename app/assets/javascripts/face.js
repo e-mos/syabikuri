@@ -14,6 +14,9 @@ $(document).ready(function() {
         this.m7_y = m7_y;
         this.f6_y = f6_y;
       },
+      setVoice : function(mp3) {
+        this.mp3 = mp3;
+      },
       drawBase : function() {
         this.img.style.position ="absolute";
         this.img.style.zIndex ="0";
@@ -47,14 +50,19 @@ $(document).ready(function() {
         }
 
         moveMouth($(canvas));
+      },
+      playAudio : function() {
+        // TODO: 音声を乗っけて、終わったら口パクを止める
+      },
+      speak : function() {
+        // TODO: drawBase、drawMouthBackGround、drawMovingMouth、playAudioをカプセル化してここで呼びたい
       }
     }
 
-    var i = -1;
+    var moveSize = 10;
 
     function moveMouth(obj) {
-      i = i * -1;
-      var moveSize = obj.position().top + 10 * i;
+      moveSize = moveSize == 10 ? 0 : 10;
       obj
         .delay(10)
         .animate({top : moveSize}, {duration : 300, complete : function() {moveMouth(obj)}});
@@ -69,7 +77,7 @@ $(document).ready(function() {
     face.drawMovingMouth();
     face.drawMouthBackGround();
 
-    // TODO 動的にCANVASのサイズを変えたい
+    // TODO: 動的にCANVASのサイズを変えたい
     // img.onload = function() {
     //   console.log(img.width);
     //   console.log(img.height);
@@ -79,10 +87,8 @@ $(document).ready(function() {
     //   $("#moving_mouth").get(0).style.height = img.height + "px";
     // }
 
-    $("#test_start").bind("click", function() {
-      console.log("aaa");
+    $("#speak").bind("click", function() {
       $("#operation_view").css("display", "none");
       $("#face_view").css("display", "inline");
     });
-
 });

@@ -6,16 +6,21 @@
       body {
         margin: 0px;
       }
+      canvas {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
     </style>
   </head>
   <body>
     <div id="operation_view">
       <!-- TODO: ここに写真選択、テキスト入力のビューを書く -->
-      <input type="button" id="test_start" value="start">
+      <input type="button" id="speak" value="しゃべくる">
     </div>
     <div id="face_view" style="display: none;">
-      <canvas id="mouth_bg" width="1000px" height="1500px" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
-      <canvas id="moving_mouth" width="1000px" height="1500px" style="position: absolute; left: 0; top: 0; z-index: 2;"></canvas>
+      <canvas id="mouth_bg" width="1000px" height="1500px" style="z-index: 1;"></canvas>
+      <canvas id="moving_mouth" width="1000px" height="1500px" style="z-index: 2;"></canvas>
     </div>
   </body>
 </html>
