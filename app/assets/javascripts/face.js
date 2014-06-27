@@ -18,7 +18,6 @@ $(document).ready(function() {
         this.mp3 = mp3;
       },
       drawBase : function() {
-        this.img.id = "face_image";
         this.img.style.position ="absolute";
         this.img.style.zIndex ="0";
         $("#face_view").append(this.img);
