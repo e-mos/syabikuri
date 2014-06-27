@@ -17,10 +17,18 @@ $(document).ready(function() {
       setVoice : function(mp3) {
         this.mp3 = mp3;
       },
-      drawBase : function() {
+      drawFace : function() {
         this.img.style.position ="absolute";
         this.img.style.zIndex ="0";
         $("#face_view").append(this.img);
+
+        var self = this;
+        this.img.onload = function() {
+          $("#mouth_bg").attr({width: self.img.width + "px", height: self.img.height + "px"});
+          $("#moving_mouth").attr({width: self.img.width + "px", height: self.img.height + "px"});
+          self.drawMovingMouth();
+          self.drawMouthBackGround();
+        }
       },
       drawMouthBackGround : function() {
         var canvas = $("#mouth_bg").get(0);
@@ -44,11 +52,7 @@ $(document).ready(function() {
         context.lineTo(this.m3_x, this.f6_y);
         context.closePath();
         context.clip();
-
-        var self = this;
-        this.img.onload = function() {
-          context.drawImage(self.img, 0, 0);
-        }
+        context.drawImage(this.img, 0, 0);        
 
         moveMouth($(canvas));
       },
@@ -56,9 +60,7 @@ $(document).ready(function() {
         // TODO: 音声を乗っけて、終わったら口パクを止める
       },
       speak : function() {
-        this.drawBase();
-        this.drawMouthBackGround();
-        this.drawMovingMouth();
+        this.drawFace();
         this.playAudio();
       }
     }
@@ -79,16 +81,6 @@ $(document).ready(function() {
       face.setImage(face_img);
       face.setPosition(157, 557, 298, 570, 674);
       face.speak();
-
-      // TODO: 動的にCANVASのサイズを変えたい
-      // img.onload = function() {
-      //   console.log(img.width);
-      //   console.log(img.height);
-      //   $("#mouth_bg").get(0).style.width = img.width + "px";
-      //   $("#mouth_bg").get(0).style.height = img.height + "px";
-      //   $("#moving_mouth").get(0).style.width = img.width + "px";
-      //   $("#moving_mouth").get(0).style.height = img.height + "px";
-      // }
 
       $("#operation_view").css("display", "none");
       $("#face_view").css("display", "inline");
