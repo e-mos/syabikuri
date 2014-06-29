@@ -44,6 +44,7 @@ function setBind(){
       var taken_img = new Image();
       taken_img.src = reader.result;
       face.setImage(taken_img);
+      $("#picture_ok").css("display", "inline");
     }
     reader.readAsDataURL(file);
   });
