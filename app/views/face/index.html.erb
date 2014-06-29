@@ -15,18 +15,18 @@
         top: 0;
       }
       .balloon {
-        background-color:#ccc;
+        background-color:#dcdcdc;
         border-radius:5px;
         position:relative;
       }
       .balloon:after {
-        border:10px solid transparent;
-        border-bottom-color:#ccc;
+        border:15px solid transparent;
+        border-bottom-color:#dcdcdc;
         border-top-width:0;
-        top:-10px;
+        top:-15px;
         content:"";
         display:block;
-        left:30px;
+        left:80px;
         position:absolute;
         width:0;
       }
@@ -44,59 +44,29 @@
         <div class="col-lg-4">&nbsp;</div>
         <div class="col-lg-4">
           <div>
-              <div>
-                <input id="take_picture_front" type="button" style="font-size: 20px;" class="btn" value="写真を選ぶ">
-                <input id="take_picture_back" type="file" accept="image/*" capture="camera" style="display: none;">
-                </br>
-                </br>
-                <span style="font-size: 120px;color: #336699;" class="glyphicon glyphicon-user"></span>
-                <span id="picture_ok" style="font-size: 40px; color: #66cc00; display: none;" class="glyphicon glyphicon-ok"></span>
-              </div>
-              <div class="balloon" style="margin-top:10px; padding:10px 10px 6px 10px">
-                <textarea id="sentence" placeholder="文章を入力する" style="width:100%; height: 100px; border:none;"></textarea>
-              </div>
+            <input id="take_picture_front" type="button" style="font-size: 24px;" class="btn" value="写真を選ぶ">
+            <input id="take_picture_back" type="file" accept="image/*" capture="camera" style="display: none;">
+            </br>
+            </br>
+            <span style="font-size: 150px; color: #336699;" class="glyphicon glyphicon-user"></span>
+            <span id="picture_ok" style="font-size: 40px; color: #66cc00; display: none;" class="glyphicon glyphicon-ok"></span>
           </div>
-        </div>
-        <div class="col-lg-4">&nbsp;</div>
-      </div>
-      <!-- <div class="row" style="display:none;">
-        <div class="col-lg-3">&nbsp;</div>
-        <div class="col-lg-6">
-          <div class="panel panel-warning">
-            <div class="panel-heading">
-              <h3 class="panel-title">顔認識エラーがでたとき</h3>
-            </div>
-            <div class="panel-body">
-              <ul>
-              <li>正面を向いている方がうまく検出されます。</li>
-              <li>前髪や眼鏡などで顔が隠れていない方がうまく検出されます。</li>
-              <li>小さな顔は検出しにくいようです。</li>
-              <li>あまり大きな画像では、顔以外の領域を顔と誤検出してしまう事が多くなります。</li>
-              <li>明るすぎたり、暗すぎたりする画像は苦手なようです。
-              </ul>
-            </div>
+          <div class="balloon" style="padding: 15px; text-align: center;">
+            <textarea id="sentence" placeholder="文章を入力する" style="width:100%; height: 100px; border:none;"></textarea>
+            <input type="button" id="speak" class="btn btn-success" style="font-size: 24px; margin-top: 8px;" value="しゃべくる">
           </div>
-        </div>
-        <div class="col-lg-3">&nbsp;</div>
-      </div> -->
-      <div class="row">
-        <div class="col-lg-4">&nbsp;</div>
-        <div class="col-lg-4" align="center">
-          </br>
-          <input type="button" id="speak" class="btn btn-success" style="font-size: 30px" value="しゃべくる">
         </div>
         <div class="col-lg-4">&nbsp;</div>
       </div>
     </div>
-
     <div id="face_view" style="display: none;">
       <canvas id="mouth_bg" style="z-index: 1;"></canvas>
       <canvas id="moving_mouth" style="z-index: 2;"></canvas>
       <button id="prayback" class="btn" style="position: absolute; z-index: 3; top: 10px; left: 10px;">
-        <i class="glyphicon glyphicon-repeat" style="font-size: 40px;"></i>
+        <i class="glyphicon glyphicon-repeat" style="font-size: 60px;"></i>
       </button>
-      <button id="home" class="btn" style="position: absolute; z-index: 3; top: 10px; left: 85px;">
-        <i class="glyphicon glyphicon-home" style="font-size: 40px;"></i></button>
+      <button id="home" class="btn" style="position: absolute; z-index: 3; top: 10px; left: 105px;">
+        <i class="glyphicon glyphicon-home" style="font-size: 60px;"></i></button>
     </div>
   </body>
 </html>
