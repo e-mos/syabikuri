@@ -74,27 +74,29 @@ function setBind(){
       this.img.onload = function() {
         $("#mouth_bg").attr({width: self.img.width + "px", height: self.img.height + "px"});
         $("#moving_mouth").attr({width: self.img.width + "px", height: self.img.height + "px"});
-        self.drawMovingMouth();
         self.drawMouthBackGround();
+        self.drawMovingMouth();
       }
     }
 
     this.drawMouthBackGround = function() {
       var canvas = $("#mouth_bg").get(0);
       var context = canvas.getContext("2d");
-      context.beginPath();
-      context.moveTo(this.m3_x, this.m3_y);
-      context.lineTo(this.m7_x, this.m7_y);
-      context.lineTo(this.m7_x, this.f6_y);
-      context.lineTo(this.m3_x, this.f6_y);
-      context.closePath();
-      context.clip();
+      this.clipMouthShape(context);
       context.fill();
     }
 
     this.drawMovingMouth = function() {
       var canvas = $("#moving_mouth").get(0);
       var context = canvas.getContext("2d");
+      this.clipMouthShape(context);
+      context.drawImage(this.img, 0, 0);        
+
+      continueMouthFlg = true;
+      moveMouth($(canvas));
+    }
+
+    this.clipMouthShape = function(context) {
       context.beginPath();
       context.moveTo(this.m3_x, this.m3_y);
       context.lineTo(this.m7_x, this.m7_y);
@@ -102,10 +104,6 @@ function setBind(){
       context.lineTo(this.m3_x, this.f6_y);
       context.closePath();
       context.clip();
-      context.drawImage(this.img, 0, 0);        
-
-      continueMouthFlg = true;
-      moveMouth($(canvas));
     }
 
     this.playAudio = function() {
