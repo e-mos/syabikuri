@@ -48,6 +48,34 @@ function setBind(){
     }
     reader.readAsDataURL(file);
   });
+
+  $("#take_picture_back").change(function() {
+    $("#send").click();
+    // $("#upload-form").submit();
+  });
+}
+
+function upload(form){
+  $form = $('#upload-form');
+  fd = new FormData($form[0]);
+  $.ajax(
+      'face/parse',
+      {
+      type: 'post',
+      processData: false,
+      contentType: false,
+      data: fd,
+      dataType: "json",
+      success: function(data) {
+          face.setPosition(data.m3_x, data.m3_y, data.m7_x, data.m7_y, data.f6_y );
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+          alert( "ERROR" );
+          alert( textStatus );
+          alert( errorThrown );
+      }
+  });
+  return false;
 }
 
 /**
@@ -57,7 +85,6 @@ function setBind(){
    $.ajax({
     url: "face/access_token"
   }).done(function(data, status, xhr) {
-    console.log("getted accessToken!!")
     access_token = data;
   });
 }

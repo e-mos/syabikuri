@@ -6,17 +6,29 @@ class FaceController < ApplicationController
 	end
 
 	def parse
-	  	#TODO: ここに顔を解析して座標を取得する処理を記載する。　とりあえずYahooのAPIを呼び出し時のサンプルを貼り付ける。
-	  	conn = Faraday.new(:url => 'http://jlp.yahooapis.jp') do |builder|
-	  		builder.request :url_encoded
-	  		builder.response :logger
-	  		builder.adapter :net_http
-	  	end
-	  	res = conn.get '/KouseiService/V1/kousei', {
-	  		:appid => "dj0zaiZpPTxxxxxxxxxxxxxxxxxxxxxxxxxxxxWVyc2VjcmV0Jng9NDI-",
-	  		:sentence => sentence,
-	  	}
-	  	Nokogiri::XML(res.body)
+		upload_file = params[:imgFace]
+		limitOfReliability = params[:limitOfReliability].to_f
+
+		#TODO: サイズをチェックして返す
+
+  		conn = Faraday.new(:url => 'http://detectface.com') do |builder|
+  			builder.request :multipart
+  			builder.request :url_encoded
+  			builder.adapter :net_http
+  		end
+
+  		payload = { :profile_pic => Faraday::UploadIO.new(upload_file.tempfile.path, 'image/jpeg') }
+  		res = conn.post '/api/detect', payload
+
+  		m = Hash.new
+  		Nokogiri::XML(res.body).css("faces :first features point").each do |e|
+  			# puts e['id']
+  			if /M3|M7|F6/ =~ e['id'] && e['s'].to_f >= limitOfReliability then
+  				m[e['id'].downcase + "_x"] = e['x']
+  				m[e['id'].downcase + "_y"] = e['y']
+  			end
+  		end
+  		render json: ActiveSupport::JSON.encode(m)
 	end
 
   	def access_token

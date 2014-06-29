@@ -45,8 +45,12 @@
         <div class="col-lg-4">&nbsp;</div>
         <div class="col-lg-4">
           <div>
-            <input id="take_picture_front" type="button" style="font-size: 24px;" class="btn" value="写真を選ぶ">
-            <input id="take_picture_back" type="file" accept="image/*" capture="camera" style="display: none;">
+            <form id="upload-form" method="post" enctype="multipart/form-data" onSubmit="return upload(this);">
+              <input id="take_picture_front" type="button" style="font-size: 24px;" class="btn" value="写真を選ぶ">
+              <input id="take_picture_back" type="file" name="imgFace" accept="image/*" capture="camera" style="display: none;">
+              <input type="hidden" name="limitOfReliability" value="0.5">
+              <input id="send" type="submit" name="submit" style="display: none"/>
+            </form>
             </br>
             </br>
             <span style="font-size: 150px; color: #336699;" class="glyphicon glyphicon-user"></span>
