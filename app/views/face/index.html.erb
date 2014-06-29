@@ -3,7 +3,7 @@
   <head>
     <title>syabikuri</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <style type="text/css">
       body {
@@ -28,7 +28,9 @@
         <div class="col-lg-4">
           <h2>STEP1</h2>
           <p class="">写真を選択する。</p>
-          <input type="file" accept="image/*" capture="camera">
+          <input id="take_picture_front" type="button" class="btn btn-success" value="写真を選ぶ">
+          <input id="take_picture_back" type="file" accept="image/*" capture="camera" style="display: none;">
+          <img id="taken_picture" src="unknon.jpg" width="150px" height="150px">
         </div>
         <div class="col-lg-4">
           <h2>STEP2</h2>

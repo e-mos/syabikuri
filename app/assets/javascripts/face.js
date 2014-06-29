@@ -10,7 +10,6 @@ $(document).ready(function() {
 });
 
 function setBind(){
-  var face = new Face();
   var face_img = new Image();
   face_img.src = "obama.jpg";
   face.setImage(face_img);
@@ -29,6 +28,23 @@ function setBind(){
 
   $("#home").bind("click", function() {
     location.href = "/";
+  });
+
+  $("#take_picture_front").bind("click", function() {
+    $("#take_picture_back").click();
+  });
+
+  $("#take_picture_back").bind("change", function() {
+    // TODO: Face.setImagehは他の実装を待って正式な場所に移動する
+    var file = document.getElementById("take_picture_back").files[0];
+    var reader = new FileReader();
+    reader.onload = function() {
+      $("#taken_picture").attr({"src": reader.result});
+      var taken_img = new Image();
+      taken_img.src = reader.result;
+      face.setImage(taken_img);
+    }
+    reader.readAsDataURL(file);
   });
 }
 
@@ -166,3 +182,5 @@ function setBind(){
   }).call(Face.prototype);
   this.Face = Face;
 })();
+
+var face = new Face();
