@@ -95,6 +95,7 @@ function setBind(){
     this.drawFace = function() {
       this.img.style.position ="absolute";
       this.img.style.zIndex ="0";
+      this.img.id = "selected_img";
       $("#face_view").append(this.img);
       $("#mouth_bg").attr({width: this.img.width + "px", height: this.img.height + "px"});
       $("#moving_mouth").attr({width: this.img.width + "px", height: this.img.height + "px"});
@@ -113,8 +114,8 @@ function setBind(){
       var canvas = $("#moving_mouth").get(0);
       var context = canvas.getContext("2d");
       this.clipMouthShape(context);
-      context.drawImage(this.img, 0, 0);        
-
+      // 一度描画さされたimgを使って描かないと縦向き画像の表示がおかしくなる
+      context.drawImage(document.getElementById("selected_img"), 0, 0);  
       isSpeaking = true;
       moveMouth($(canvas));
     }
