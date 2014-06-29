@@ -10,11 +10,6 @@ $(document).ready(function() {
 });
 
 function setBind(){
-  var face_img = new Image();
-  face_img.src = "obama.jpg";
-  face.setImage(face_img);
-  face.setPosition(157, 557, 298, 570, 674);
-
   $("#speak").bind("click", function() {
     face.speak();
     $("#operation_view").css("display", "none");
@@ -36,22 +31,11 @@ function setBind(){
   });
 
   $("#take_picture_back").bind("change", function() {
-    // TODO: Face.setImagehは他の実装を待って正式な場所に移動する
-    var file = document.getElementById("take_picture_back").files[0];
-    var reader = new FileReader();
-    reader.onload = function() {
-      $("#taken_picture").attr({"src": reader.result});
-      var taken_img = new Image();
-      taken_img.src = reader.result;
-      face.setImage(taken_img);
-      $("#picture_ok").css("display", "inline");
-    }
-    reader.readAsDataURL(file);
+    $("#send").click();
   });
 
-  $("#take_picture_back").change(function() {
-    $("#send").click();
-    // $("#upload-form").submit();
+  $("#sentence").bind("keyup", function() {
+    face.checkSpeak();
   });
 }
 
@@ -67,7 +51,18 @@ function upload(form){
       data: fd,
       dataType: "json",
       success: function(data) {
-          face.setPosition(data.m3_x, data.m3_y, data.m7_x, data.m7_y, data.f6_y );
+        console.log(data);
+        face.setPosition(data.m3_x, data.m3_y, data.m7_x, data.m7_y, data.f6_y);
+        var file = document.getElementById("take_picture_back").files[0];
+        var reader = new FileReader();
+        reader.onload = function() {
+          var taken_img = new Image();
+          taken_img.src = reader.result;
+          face.setImage(taken_img);
+          face.checkSpeak();
+          $("#picture_ok").css("display", "inline");
+        }
+        reader.readAsDataURL(file);
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
           alert( "ERROR" );
@@ -95,7 +90,7 @@ function upload(form){
       return new Face();
     }
     // インスタンス変数
-    this.img;
+    this.img = null;
     this.m3_x;
     this.m3_y;
     this.m7_x;
@@ -117,6 +112,14 @@ function upload(form){
       this.m7_x = m7_x;
       this.m7_y = m7_y;
       this.f6_y = f6_y;
+    }
+
+    this.checkSpeak = function() {
+      if (this.img != null && $("#sentence").val() != "") {
+        $("#speak").removeAttr("disabled");
+      } else {
+        $("#speak").attr({"disabled": "disabled"});
+      }
     }
 
     this.drawFace = function() {
