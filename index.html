@@ -42,8 +42,8 @@
       <div class="masthead">
         <h3 class="text-muted">syabikuri</h3>
       </div>
-      <<div class="jumbotron" style="background-image:url(https://dl.dropboxusercontent.com/u/232551663/syabikuri/images/jumbotron-bg.jpg)">
-      <!-- <div class="jumbotron" style="background-image:url(../images/jumbotron-bg.jpg)"> -->
+      <!-- <div class="jumbotron" style="background-image:url(https://dl.dropboxusercontent.com/u/232551663/syabikuri/images/jumbotron-bg.jpg)"> -->
+      <div class="jumbotron" style="background-image:url(images/jumbotron-bg.jpg)">
         <div style="max-width:700px;"><h1>しゃべくり写真でザワつかせよう！</h1></div>
       </div>
       <div class="row">
@@ -51,11 +51,12 @@
         <div class="col-lg-4">
           <div class="wrapper">
             
-              <div　>
-                <input type="file" accept="image/*" capture="camera" >
-                <span style="font-size: 120px;color: gray;" class="glyphicon glyphicon-user"></span>
+              <div>
+                <img id="taken_picture" src="images/unknon.jpg" width="150px" height="150px">
+                <input id="take_picture_front" type="button" class="btn btn-info" value="写真を選ぶ">
+                <input id="take_picture_back" type="file" accept="image/*" capture="camera" style="display: none;">
               </div>
-              <div class="sample" style="margin-top:10px;padding:10px 10px 6px 10px"><textarea id="sentence" placeholder="ここに文章を入力してください。" style="width:100%; height: 100px; border:none;"></textarea></div>
+              <div class="sample" style="margin-top:10px;padding:10px 10px 6px 10px"><textarea id="sentence" placeholder="ここに文章を入力する" style="width:100%; height: 100px; border:none;"></textarea></div>
               
           </div>
         </div>
@@ -81,9 +82,10 @@
         </div>
         <div class="col-lg-3">&nbsp;</div>
       </div>
+      </br>
       <div class="row">
         <div class="col-lg-5">&nbsp;</div>
-        <div class="col-lg-2" align="center"><input type="button" id="speak" class="btn btn-success" value="しゃべくらせる"></div>
+        <div class="col-lg-2" align="center"><input type="button" id="speak" class="btn btn-success" style="font-size: 30px" value="しゃべくらせる"></div>
         <div class="col-lg-5">&nbsp;</div>
       </div>
     </div>
@@ -91,5 +93,8 @@
       <canvas id="mouth_bg" style="z-index: 1;"></canvas>
       <canvas id="moving_mouth" style="z-index: 2;"></canvas>
     </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script src="js/face.js"></script>
   </body>
 </html>
