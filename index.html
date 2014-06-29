@@ -1,1 +1,52 @@
-aaa
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>syabikuri</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <style type="text/css">
+      body {
+        margin: 0px;
+      }
+      canvas {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="operation_view" class="container">
+      <div class="masthead">
+        <h3 class="text-muted">syabikuri - 写! -</h3>
+      </div>
+      <div class="jumbotron">
+        <h1>しゃべくり写真を作って周りをザワつかましょう！</h1>
+      </div>
+      <div class="row">
+        <div class="col-lg-4">
+          <h2>STEP1</h2>
+          <p class="">写真を選択する。</p>
+          <input type="file" accept="image/*" capture="camera">
+        </div>
+        <div class="col-lg-4">
+          <h2>STEP2</h2>
+          <p class="">文章を入力する。</p>
+          <textarea id="sentence" placeholder="ここに文章を入力してください。" style="width:300px; height: 100px"></textarea>
+       </div>
+        <div class="col-lg-4">
+          <h2>STEP3</h2>
+          <input type="button" id="speak" class="btn btn-success" value="しゃべくらせる">
+        </div>
+      </div>
+      <div class="footer">
+        <p>&copy; e-mos 2014</p>
+      </div>
+    </div>
+    <div id="face_view" style="display: none;">
+      <canvas id="mouth_bg" style="z-index: 1;"></canvas>
+      <canvas id="moving_mouth" style="z-index: 2;"></canvas>
+    </div>
+  </body>
+</html>
