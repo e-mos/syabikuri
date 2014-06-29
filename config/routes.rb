@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'face/index'
   get 'face/parse'
   get 'face/speak'
+  get 'face/access_token'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

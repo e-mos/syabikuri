@@ -1,5 +1,6 @@
 class FaceController < ApplicationController
 	require 'nokogiri'
+	require 'active_support'
 
 	def index
 	end
@@ -17,8 +18,21 @@ class FaceController < ApplicationController
 	  	}
 	  	Nokogiri::XML(res.body)
 	end
-	
-	def speak
-  		#TODO: ここに文章を送ってmp3に変換して返すメソッドを記載する。
-  	end
+
+  	def access_token
+  		conn = Faraday.new(:url => 'https://datamarket.accesscontrol.windows.net') do |builder|
+  			builder.request :url_encoded
+  			builder.adapter :net_http
+  		end
+  		res = conn.post '/v2/OAuth2-13', {
+  			:client_id => "syabikuri",
+  			:client_secret => "QOj9v30w3iRepb7qEmVvfEXlBGVUOCkt+/8xVxBkYgg=",
+  			:scope => "http://api.microsofttranslator.com",
+  			:grant_type => "client_credentials"
+  		}
+
+  		# JSON -> HashMapに変換
+  		r = ActiveSupport::JSON.decode(res.body)
+  		render text: r['access_token']
+	end
 end
