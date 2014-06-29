@@ -18,6 +18,7 @@ function setBind(){
   $("#speak").bind("click", function() {
     face.speak();
     $("#operation_view").css("display", "none");
+    scrollTo(0, 0);
     $("#face_view").css("display", "inline");
   });
 
