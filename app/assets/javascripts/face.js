@@ -10,16 +10,25 @@ $(document).ready(function() {
 });
 
 function setBind(){
-  $("#speak").bind("click", function() {
-    var face_img = new Image();
-    face_img.src = "obama.jpg";
-    var face = new Face();
-    face.setImage(face_img);
-    face.setPosition(157, 557, 298, 570, 674);
-    face.speak();
+  var face = new Face();
+  var face_img = new Image();
+  face_img.src = "obama.jpg";
+  face.setImage(face_img);
+  face.setPosition(157, 557, 298, 570, 674);
 
+  $("#speak").bind("click", function() {
+    face.speak();
     $("#operation_view").css("display", "none");
     $("#face_view").css("display", "inline");
+  });
+
+  $("#prayback").bind("click", function() {
+    face.drawMovingMouth();
+    face.playAudio();
+  });
+
+  $("#home").bind("click", function() {
+    location.href = "/";
   });
 }
 
@@ -51,7 +60,7 @@ function setBind(){
   }
   (function(){
     var old_sentence;
-    var continueMouthFlg = true;
+    var isSpeaking = true;
 
     this.setImage = function(img) {
       this.img = img;
@@ -69,14 +78,10 @@ function setBind(){
       this.img.style.position ="absolute";
       this.img.style.zIndex ="0";
       $("#face_view").append(this.img);
-
-      var self = this;
-      this.img.onload = function() {
-        $("#mouth_bg").attr({width: self.img.width + "px", height: self.img.height + "px"});
-        $("#moving_mouth").attr({width: self.img.width + "px", height: self.img.height + "px"});
-        self.drawMouthBackGround();
-        self.drawMovingMouth();
-      }
+      $("#mouth_bg").attr({width: this.img.width + "px", height: this.img.height + "px"});
+      $("#moving_mouth").attr({width: this.img.width + "px", height: this.img.height + "px"});
+      this.drawMouthBackGround();
+      this.drawMovingMouth();
     }
 
     this.drawMouthBackGround = function() {
@@ -92,7 +97,7 @@ function setBind(){
       this.clipMouthShape(context);
       context.drawImage(this.img, 0, 0);        
 
-      continueMouthFlg = true;
+      isSpeaking = true;
       moveMouth($(canvas));
     }
 
@@ -146,16 +151,18 @@ function setBind(){
 
     function moveMouth(obj) {
       moveSize = moveSize == 10 ? 0 : 10;
+      if (!isSpeaking && moveSize == 10) {
+        return;
+      }
       obj
       .delay(10)
-      .animate({top : moveSize}, {duration : 300, complete : function() {if(continueMouthFlg) moveMouth(obj)}});
+      .animate({top : moveSize}, {duration : 190, complete : function() {moveMouth(obj)}});
     }
 
     function stopMouth(){
-      continueMouthFlg = false;
+      isSpeaking = false;
     }
 
   }).call(Face.prototype);
   this.Face = Face;
 })();
-
