@@ -5,8 +5,8 @@ var option = "MinSize"
 var moveSize = 10;
 
 $(document).ready(function() {
-  setBind();
   setAccessToken();
+  setBind();
 });
 
 function setBind(){
@@ -30,14 +30,29 @@ function setBind(){
    $.ajax({
     url: "face/access_token"
   }).done(function(data, status, xhr) {
+    console.log("getted accessToken!!")
     access_token = data;
   });
 }
 
 (function(){
   function Face() {
+    if (!(this instanceof Face)) {
+      return new Face();
+    }
+    // インスタンス変数
+    this.img;
+    this.m3_x;
+    this.m3_y;
+    this.m7_x;
+    this.m7_y;
+    this.f6_y;
+    this.audio;
   }
   (function(){
+    var old_sentence;
+    var continueMouthFlg = true;
+
     this.setImage = function(img) {
       this.img = img;
     }
@@ -48,10 +63,6 @@ function setBind(){
       this.m7_x = m7_x;
       this.m7_y = m7_y;
       this.f6_y = f6_y;
-    }
-
-    this.setVoice = function(mp3) {
-      this.mp3 = mp3;
     }
 
     this.drawFace = function() {
@@ -93,38 +104,60 @@ function setBind(){
       context.clip();
       context.drawImage(this.img, 0, 0);        
 
+      continueMouthFlg = true;
       moveMouth($(canvas));
     }
 
     this.playAudio = function() {
-        // TODO: 音声を乗っけて、終わったら口パクを止める
+      var sentence = $('#sentence').val();
+
+      // 文字列に変更がなければ、もう一度再生
+      if(this.audio && sentence == old_sentence) {
+        this.audio.play();
+        console.log("old_audio_play");
+      } else{
+        sendSpeakWebApi(sentence);
+        console.log("new_audio_play");
+      } 
     }
+
+    /** speakのコールバック処理 */
+    this.playAudioCallback = function (response){
+      console.log("playAudioCallback_start!!");
+
+      this.audio = new Audio(response);
+      this.audio.addEventListener('ended', function(){stopMouth()});
+      this.audio.play();
+      console.log("playAudioCallback_end!!");
+    } 
 
     this.speak = function() {
       this.drawFace();
       this.playAudio();
     }
 
+    function sendSpeakWebApi(sentence) {
+      console.log("sendSpeakWebApi_start!!");
+
+      var s = document.createElement("script");
+      s.src = "http://api.microsofttranslator.com/V2/Ajax.svc/Speak?oncomplete=Face.prototype.playAudioCallback&appId=Bearer" + " " + encodeURIComponent(access_token) + "&text=" + encodeURIComponent(sentence) + "&language=" + language + "&format=" + format;
+      document.getElementsByTagName("head")[0].appendChild(s);
+
+      console.log("sendSpeakWebApi_end!!");
+    }
+
     function moveMouth(obj) {
       moveSize = moveSize == 10 ? 0 : 10;
       obj
       .delay(10)
-      .animate({top : moveSize}, {duration : 300, complete : function() {moveMouth(obj)}});
+      .animate({top : moveSize}, {duration : 300, complete : function() {if(continueMouthFlg) moveMouth(obj)}});
     }
+
+    function stopMouth(){
+      continueMouthFlg = false;
+    }
+
   }).call(Face.prototype);
   this.Face = Face;
 })();
 
-// Face.prototype = {
-//   speak : function(sentence){
-//     window.speakcallback = function (response) {console.log(response); }
-//     var s = document.createElement("script");
-//     s.src = "http://api.microsofttranslator.com/V2/Ajax.svc/Speak?oncomplete=speakcallback&appId=Bearer" + " " + encodeURIComponent(access_token) + "&text=" + encodeURIComponent(sentence) + "&language=" + language + "&format=" + format;
-//     document.getElementsByTagName("head")[0].appendChild(s);
-//   }
-// }
-
-/** speakのコールバック処理 */
-function speakcallback(response){
-  console.log(response)
-} 
