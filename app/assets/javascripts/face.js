@@ -60,14 +60,25 @@ function upload(form){
           taken_img.src = reader.result;
           face.setImage(taken_img);
           face.checkSpeak();
+          
+          if( data.errCode　== 1　){
+            // サイズチェックエラー
+
+          } else if(data.errCode　== 2){
+            // 信頼度が低いエラー
+
+          } else {
+            // 正常処理
+            face.setPosition(data.m3_x, data.m3_y, data.m7_x, data.m7_y, data.f6_y );
+          }
+
           $("#picture_ok").css("display", "inline");
         }
         reader.readAsDataURL(file);
+
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
           alert( "ERROR" );
-          alert( textStatus );
-          alert( errorThrown );
       }
   });
   return false;
