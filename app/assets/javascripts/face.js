@@ -2,7 +2,7 @@ var access_token
 var language = "ja";
 var format = "audio/mp3";
 var option = "MinSize"
-var moveSize = 10;
+var moveSize = 8;
 
 $(document).ready(function() {
   setAccessToken();
@@ -114,8 +114,7 @@ function setBind(){
       var canvas = $("#moving_mouth").get(0);
       var context = canvas.getContext("2d");
       this.clipMouthShape(context);
-      // 一度描画さされたimgを使って描かないと縦向き画像の表示がおかしくなる
-      context.drawImage(document.getElementById("selected_img"), 0, 0);  
+      context.drawImage(this.img, 0, 0);
       isSpeaking = true;
       moveMouth($(canvas));
     }
@@ -169,8 +168,8 @@ function setBind(){
     }
 
     function moveMouth(obj) {
-      moveSize = moveSize == 10 ? 0 : 10;
-      if (!isSpeaking && moveSize == 10) {
+      moveSize = moveSize == 8 ? 0 : 8;
+      if (!isSpeaking && moveSize == 8) {
         return;
       }
       obj
