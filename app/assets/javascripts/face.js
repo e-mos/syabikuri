@@ -51,6 +51,17 @@ function upload(form){
       data: fd,
       dataType: "json",
       success: function(data) {
+
+        if (data.errCode　== 1) {
+          // サイズチェックエラー
+          alert("申し訳ありませんが、アップロードできるファイルは2MBまでになります。");
+          return
+        } else if (data.errCode　== 2) {
+          // 信頼度が低いエラー
+          alert("申し訳ありませんが、顔認識がうまくできませんでした。もう一度、他の写真を選んでください。");
+          return
+        }
+
         console.log(data);
         face.setPosition(data.m3_x, data.m3_y, data.m7_x, data.m7_y, data.f6_y);
         var file = document.getElementById("take_picture_back").files[0];
@@ -60,22 +71,9 @@ function upload(form){
           taken_img.src = reader.result;
           face.setImage(taken_img);
           face.checkSpeak();
-          
-          if( data.errCode　== 1　){
-            // サイズチェックエラー
-
-          } else if(data.errCode　== 2){
-            // 信頼度が低いエラー
-
-          } else {
-            // 正常処理
-            face.setPosition(data.m3_x, data.m3_y, data.m7_x, data.m7_y, data.f6_y );
-          }
-
           $("#picture_ok").css("display", "inline");
         }
         reader.readAsDataURL(file);
-
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
           alert( "ERROR" );
