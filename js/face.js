@@ -5,6 +5,18 @@ var option = "MinSize"
 var moveSize = 8;
 var spinner;
 
+var sample_img = new Image();
+sample_img.src = 'images/sample.jpg';
+var sample_sound = new Audio('sounds/Speak.mp3');
+var sample_data = {
+    f6_x: "340",
+    f6_y: "540",
+    m3_x: "324",
+    m3_y: "518",
+    m7_x: "352",
+    m7_y: "516",
+}
+
 $(document).ready(function() {
   if (!isPc()) {
     $("#non_suport_modal").modal("show");
@@ -42,6 +54,14 @@ function setBind(){
 
   $("#sentence").bind("keyup", function() {
     face.checkSpeak();
+  });
+    
+  $("#sample").bind("click",function(){
+    var sample_face = new Face(sample_img, sample_data, sample_sound);
+    sample_face.speak();
+    $("#operation_view").css("display", "none");
+    scrollTo(0, 0);
+    $("#face_view").css("display", "inline");
   });
 }
 
@@ -140,18 +160,20 @@ function spinOff() {
 }
 
 (function(){
-  function Face() {
+  function Face(img, data, audio) {
     if (!(this instanceof Face)) {
       return new Face();
     }
     // インスタンス変数
-    this.img = null;
-    this.m3_x;
-    this.m3_y;
-    this.m7_x;
-    this.m7_y;
-    this.f6_y;
-    this.audio;
+    this.img = img;
+    if(data){
+      this.m3_x = data.m3_x;
+      this.m3_y = data.m3_y;
+      this.m7_x = data.m7_x;
+      this.m7_y = data.m7_y;
+      this.f6_y = data.f6_y;
+    }
+    this.audio = audio;
   }
   (function(){
     var old_sentence;
@@ -218,7 +240,7 @@ function spinOff() {
       var sentence = $('#sentence').val();
 
       // 文字列に変更がなければ、もう一度再生
-      if(this.audio && sentence == old_sentence) {
+      if(this.audio && (sentence == false || sentence == old_sentence)) {
         this.audio.play();
         console.log("old_audio_play");
       } else{
