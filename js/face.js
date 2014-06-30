@@ -89,7 +89,7 @@ function upload(form){
  */
  function setAccessToken(){
    $.ajax({
-    url: "http://syabikuri.herokuapp.com/face/access_token"
+    url: "http://syabikuri.herokuapp.com/face/access_token",
   }).done(function(data, status, xhr) {
     access_token = data;
   });
