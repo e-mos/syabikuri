@@ -20,7 +20,6 @@ var sample_data = {
 $(document).ready(function() {
   if (!isPc()) {
     $("#non_support_modal").modal("show");
-    return;
   }
   setAccessToken();
   setBind();
