@@ -1,6 +1,7 @@
 class FaceController < ApplicationController
 	require 'nokogiri'
 	require 'active_support'
+  skip_before_filter :verify_authenticity_token ,:only=>[:parse]
 
 	def index
 	end
@@ -35,6 +36,9 @@ class FaceController < ApplicationController
         end
       end
     end
+
+    # 一つも座標が取得できなければエラーにする。
+    m[:errCode] = 2 if m.size == 0
 
     render json: ActiveSupport::JSON.encode(m)
   end
