@@ -5,6 +5,10 @@ var option = "MinSize"
 var moveSize = 8;
 
 $(document).ready(function() {
+  if (!isPc()) {
+    $('#non_suport_modal').modal('show');
+    return;
+  }
   setAccessToken();
   setBind();
 });
@@ -51,6 +55,15 @@ function upload(form){
       data: fd,
       dataType: "json",
       success: function(data) {
+
+        if (data.errCode　== 1) {
+          $('#size_error_modal').modal('show');
+          return
+        } else if (data.errCode　== 2) {
+          $('#low_accuracy_error_modal').modal('show');
+          return
+        }
+
         console.log(data);
         face.setPosition(data.m3_x, data.m3_y, data.m7_x, data.m7_y, data.f6_y);
         var file = document.getElementById("take_picture_back").files[0];
@@ -60,28 +73,25 @@ function upload(form){
           taken_img.src = reader.result;
           face.setImage(taken_img);
           face.checkSpeak();
-          
-          if( data.errCode　== 1　){
-            // サイズチェックエラー
-
-          } else if(data.errCode　== 2){
-            // 信頼度が低いエラー
-
-          } else {
-            // 正常処理
-            face.setPosition(data.m3_x, data.m3_y, data.m7_x, data.m7_y, data.f6_y );
-          }
-
           $("#picture_ok").css("display", "inline");
         }
         reader.readAsDataURL(file);
 
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
-          alert( "ERROR" );
+          $('#unknown_error_modal').modal('show');
       }
   });
   return false;
+}
+
+function isPc() {
+  var ua = navigator.userAgent.toUpperCase();
+  if ( ua.indexOf( "ANDROID" )  > -1 || ua.indexOf( "IPHONE" ) > -1 || ua.indexOf( "IPAD" ) > -1 || ua.indexOf( "IPOD" )  > -1 ) {
+    return false;
+  }else {
+    return true;
+  }
 }
 
 /**
