@@ -28,7 +28,7 @@ function setBind(){
   });
 
   $("#home").bind("click", function() {
-    location.href = "/";
+    location.href = "http://e-mos.github.io/syabikuri/";
   });
 
   $("#take_picture_front").bind("click", function() {
