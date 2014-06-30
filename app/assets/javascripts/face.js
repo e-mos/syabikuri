@@ -5,6 +5,10 @@ var option = "MinSize"
 var moveSize = 8;
 
 $(document).ready(function() {
+  if (!isPc()) {
+    $('#non_suport_modal').modal('show');
+    return;
+  }
   setAccessToken();
   setBind();
 });
@@ -53,12 +57,10 @@ function upload(form){
       success: function(data) {
 
         if (data.errCode　== 1) {
-          // サイズチェックエラー
-          alert("申し訳ありませんが、アップロードできるファイルは2MBまでになります。");
+          $('#size_error_modal').modal('show');
           return
         } else if (data.errCode　== 2) {
-          // 信頼度が低いエラー
-          alert("申し訳ありませんが、顔認識がうまくできませんでした。もう一度、他の写真を選んでください。");
+          $('#low_accuracy_error_modal').modal('show');
           return
         }
 
@@ -76,10 +78,19 @@ function upload(form){
         reader.readAsDataURL(file);
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
-          alert( "ERROR" );
+          $('#unknown_error_modal').modal('show');
       }
   });
   return false;
+}
+
+function isPc() {
+  var ua = navigator.userAgent.toUpperCase();
+  if ( ua.indexOf( "ANDROID" )  > -1 || ua.indexOf( "IPHONE" ) > -1 || ua.indexOf( "IPAD" ) > -1 || ua.indexOf( "IPOD" )  > -1 ) {
+    return false;
+  }else {
+    return true;
+  }
 }
 
 /**

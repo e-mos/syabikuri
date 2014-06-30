@@ -3,9 +3,9 @@
   <head>
     <title>syabikuri</title>
     <meta charset="utf-8">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-    <meta name="viewport" content="user-scalable=no">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <style type="text/css">
       body {
         margin: 0px;
@@ -51,6 +51,7 @@
               <input type="hidden" name="limitOfReliability" value="0.5">
               <input id="send" type="submit" name="submit" style="display: none">
             </form>
+            </br>
             <span style="font-size: 150px; color: #336699;" class="glyphicon glyphicon-user"></span>
             <span id="picture_ok" style="font-size: 40px; color: #66cc00; display: none;" class="glyphicon glyphicon-ok"></span>
           </div>
@@ -66,11 +67,73 @@
       <canvas id="mouth_bg" style="z-index: 1;"></canvas>
       <canvas id="moving_mouth" style="z-index: 2;"></canvas>
       <button id="prayback" class="btn" style="position: absolute; z-index: 3; top: 10px; left: 10px;">
-        <i class="glyphicon glyphicon-repeat" style="font-size: 45px;"></i>
+        <i class="glyphicon glyphicon-repeat" style="font-size: 20px;"></i>
       </button>
-      <button id="home" class="btn" style="position: absolute; z-index: 3; top: 10px; left: 90px;">
-        <i class="glyphicon glyphicon-home" style="font-size: 45px;"></i>
+      <button id="home" class="btn" style="position: absolute; z-index: 3; top: 10px; left: 60px;">
+        <i class="glyphicon glyphicon-home" style="font-size: 20px;"></i>
       </button>
+    </div>
+
+    <div id="non_suport_modal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"></span></h4>
+          </div>
+          <div class="modal-body">
+            <h3>申し訳ありませんが、今のところタブレット、スマートフォンには対応していません。</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="size_error_modal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"></span></h4>
+          </div>
+          <div class="modal-body">
+            <h3>申し訳ありませんが、アップロードできるファイルは2MBまでになります。</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="low_accuracy_error_modal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"></span></h4>
+          </div>
+          <div class="modal-body">
+            <h3>顔認識しにくい写真のようです。</h3>
+            <h3>よろしければ以下の注意事項をお読みになり、他の写真も試してみてください。</h3>
+            </br>
+            <p>・１人だけが写った写真をお使いください。</p>
+            <p>・サイズが小さな写真（スマートフォンのインカメラなど）だと検出されやすいです。</p>
+            <p>・正面を向いている方がうまく検出されます。</p>
+            <p>・前髪や眼鏡などで顔が隠れていない方がうまく検出されます。</p>
+            <p>・小さな顔は検出しにくいようです。</p>
+            <p>・あまり大きな画像では、顔以外の領域を顔と誤検出してしまう事が多くなります。</p>
+            <p>・明るすぎたり、暗すぎたりする画像は苦手なようです。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="unknown_error_modal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"></span></h4>
+          </div>
+          <div class="modal-body">
+            <h3>顔認識がうまくできませんでした。申し訳ありませんが、もう一度試してみてください。繰り返し失敗するようなら他の写真を選んでみてください。</h3>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

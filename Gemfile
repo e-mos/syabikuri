@@ -36,9 +36,9 @@ gem 'spring',        group: :development
 gem 'bcrypt', '~> 3.1.7'
 
 # Use Bootstrap
-gem 'libv8'
-gem 'twitter-bootstrap-rails'
-gem 'less-rails-bootstrap'
+# gem 'libv8'
+# gem 'twitter-bootstrap-rails'
+# gem 'less-rails-bootstrap'
 
 # Use unicorn as the app server
 # gem 'unicorn'
