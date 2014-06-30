@@ -19,7 +19,7 @@ var sample_data = {
 
 $(document).ready(function() {
   if (!isPc()) {
-    $("#non_suport_modal").modal("show");
+    $("#non_support_modal").modal("show");
     return;
   }
   setAccessToken();
@@ -34,7 +34,7 @@ function setBind(){
     $("#face_view").css("display", "inline");
   });
 
-  $("#prayback").bind("click", function() {
+  $("#playback").bind("click", function() {
     face.drawMovingMouth();
     face.playAudio();
   });
@@ -80,10 +80,10 @@ function upload(form){
         spinOff();
 
         if (data.errCode　== 1) {
-          $("#size_error_modal").modal("show");
+          $("#size_over_modal").modal("show");
           return
         } else if (data.errCode　== 2) {
-          $("#low_accuracy_error_modal").modal("show");
+          $("#low_accuracy_modal").modal("show");
           return
         }
 
