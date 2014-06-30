@@ -3,10 +3,11 @@ var language = "ja";
 var format = "audio/mp3";
 var option = "MinSize"
 var moveSize = 8;
+var spinner;
 
 $(document).ready(function() {
   if (!isPc()) {
-    $('#non_suport_modal').modal('show');
+    $("#non_suport_modal").modal("show");
     return;
   }
   setAccessToken();
@@ -35,6 +36,7 @@ function setBind(){
   });
 
   $("#take_picture_back").bind("change", function() {
+    spinOn();
     $("#send").click();
   });
 
@@ -55,12 +57,13 @@ function upload(form){
       data: fd,
       dataType: "json",
       success: function(data) {
+        spinOff();
 
         if (data.errCode　== 1) {
-          $('#size_error_modal').modal('show');
+          $("#size_error_modal").modal("show");
           return
         } else if (data.errCode　== 2) {
-          $('#low_accuracy_error_modal').modal('show');
+          $("#low_accuracy_error_modal").modal("show");
           return
         }
 
@@ -79,7 +82,8 @@ function upload(form){
 
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
-          $('#unknown_error_modal').modal('show');
+        spinOff();
+        $("#unknown_error_modal").modal("show");
       }
   });
   return false;
@@ -92,6 +96,36 @@ function isPc() {
   }else {
     return true;
   }
+}
+
+function spinOn() {
+  var opts = {
+    lines:   12,    // 回転する線の本数
+    length:  7,     // 線の長さ
+    width:   4,     // 線の太さ
+    radius:  10,    // 線の丸み
+    color: ' #000', // 線の色　#rgb or #rrggbb
+    speed:   1,     // 1回転に要する時間 秒
+    trail:   60,    // Afterglow percentage
+    shadow:  false, // 線に影を付ける場合、true
+    hwaccel: false  // Whether to use hardware acceleration
+  };
+
+  // アニメーションを挿入する要素
+  var target = $('#spin')
+            .css({
+               height : 100,
+               width  : 100,
+               padding: 5
+            })
+            .get(0);
+
+  // 実行
+  spinner = new Spinner(opts).spin(target);
+}
+
+function spinOff() {
+  spinner.stop();
 }
 
 /**
