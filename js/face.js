@@ -2,7 +2,7 @@ var access_token
 var language = "ja";
 var format = "audio/mp3";
 var option = "MinSize"
-var moveSize = 10;
+var moveSize = 8;
 
 $(document).ready(function() {
   setAccessToken();
@@ -10,14 +10,10 @@ $(document).ready(function() {
 });
 
 function setBind(){
-  var face_img = new Image();
-  face_img.src = "obama.jpg";
-  face.setImage(face_img);
-  face.setPosition(157, 557, 298, 570, 674);
-
   $("#speak").bind("click", function() {
     face.speak();
     $("#operation_view").css("display", "none");
+    scrollTo(0, 0);
     $("#face_view").css("display", "inline");
   });
 
@@ -35,17 +31,57 @@ function setBind(){
   });
 
   $("#take_picture_back").bind("change", function() {
-    // TODO: Face.setImagehは他の実装を待って正式な場所に移動する
-    var file = document.getElementById("take_picture_back").files[0];
-    var reader = new FileReader();
-    reader.onload = function() {
-      $("#taken_picture").attr({"src": reader.result});
-      var taken_img = new Image();
-      taken_img.src = reader.result;
-      face.setImage(taken_img);
-    }
-    reader.readAsDataURL(file);
+    $("#send").click();
   });
+
+  $("#sentence").bind("keyup", function() {
+    face.checkSpeak();
+  });
+}
+
+function upload(form){
+  $form = $('#upload-form');
+  fd = new FormData($form[0]);
+  $.ajax(
+      'http://syabikuri.herokuapp.com/face/parse',
+      {
+      type: 'post',
+      processData: false,
+      contentType: false,
+      data: fd,
+      dataType: "json",
+      success: function(data) {
+        console.log(data);
+        face.setPosition(data.m3_x, data.m3_y, data.m7_x, data.m7_y, data.f6_y);
+        var file = document.getElementById("take_picture_back").files[0];
+        var reader = new FileReader();
+        reader.onload = function() {
+          var taken_img = new Image();
+          taken_img.src = reader.result;
+          face.setImage(taken_img);
+          face.checkSpeak();
+          
+          if( data.errCode　== 1　){
+            // サイズチェックエラー
+
+          } else if(data.errCode　== 2){
+            // 信頼度が低いエラー
+
+          } else {
+            // 正常処理
+            face.setPosition(data.m3_x, data.m3_y, data.m7_x, data.m7_y, data.f6_y );
+          }
+
+          $("#picture_ok").css("display", "inline");
+        }
+        reader.readAsDataURL(file);
+
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+          alert( "ERROR" );
+      }
+  });
+  return false;
 }
 
 /**
@@ -53,9 +89,8 @@ function setBind(){
  */
  function setAccessToken(){
    $.ajax({
-    url: "face/access_token"
+    url: "http://syabikuri.herokuapp.com/face/access_token"
   }).done(function(data, status, xhr) {
-    console.log("getted accessToken!!")
     access_token = data;
   });
 }
@@ -66,7 +101,7 @@ function setBind(){
       return new Face();
     }
     // インスタンス変数
-    this.img;
+    this.img = null;
     this.m3_x;
     this.m3_y;
     this.m7_x;
@@ -90,9 +125,18 @@ function setBind(){
       this.f6_y = f6_y;
     }
 
+    this.checkSpeak = function() {
+      if (this.img != null && $("#sentence").val() != "") {
+        $("#speak").removeAttr("disabled");
+      } else {
+        $("#speak").attr({"disabled": "disabled"});
+      }
+    }
+
     this.drawFace = function() {
       this.img.style.position ="absolute";
       this.img.style.zIndex ="0";
+      this.img.id = "selected_img";
       $("#face_view").append(this.img);
       $("#mouth_bg").attr({width: this.img.width + "px", height: this.img.height + "px"});
       $("#moving_mouth").attr({width: this.img.width + "px", height: this.img.height + "px"});
@@ -111,8 +155,7 @@ function setBind(){
       var canvas = $("#moving_mouth").get(0);
       var context = canvas.getContext("2d");
       this.clipMouthShape(context);
-      context.drawImage(this.img, 0, 0);        
-
+      context.drawImage(this.img, 0, 0);
       isSpeaking = true;
       moveMouth($(canvas));
     }
@@ -166,8 +209,8 @@ function setBind(){
     }
 
     function moveMouth(obj) {
-      moveSize = moveSize == 10 ? 0 : 10;
-      if (!isSpeaking && moveSize == 10) {
+      moveSize = moveSize == 8 ? 0 : 8;
+      if (!isSpeaking && moveSize == 8) {
         return;
       }
       obj
