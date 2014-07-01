@@ -102,7 +102,6 @@ function upload(form){
           $("#picture_ok").css("display", "inline");
         }
         reader.readAsDataURL(file);
-
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
         spinOff();
