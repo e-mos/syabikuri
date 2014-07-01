@@ -7,8 +7,8 @@ var spinner;
 
 var sample_img = new Image();
 sample_img.src = 'images/sample.jpg';
-var sample_sound = new Audio('sounds/Speak.mp3');
-var sample_data = {
+var sample_audio = new Audio('sounds/Speak.mp3');
+var sample_position = {
     f6_x: "340",
     f6_y: "540",
     m3_x: "324",
@@ -56,8 +56,12 @@ function setBind(){
   });
     
   $("#sample").bind("click",function(){
-    var sample_face = new Face(sample_img, sample_data, sample_sound);
+    var sample_face = new Face();
+    sample_face.setImage(sample_img);
+    sample_face.setPosition(sample_position);
+    sample_face.setAudio(sample_audio);
     sample_face.speak();
+      
     $("#operation_view").css("display", "none");
     scrollTo(0, 0);
     $("#face_view").css("display", "inline");
@@ -87,7 +91,7 @@ function upload(form){
         }
 
         console.log(data);
-        face.setPosition(data.m3_x, data.m3_y, data.m7_x, data.m7_y, data.f6_y);
+        face.setPosition(data);
         var file = document.getElementById("take_picture_back").files[0];
         var reader = new FileReader();
         reader.onload = function() {
@@ -159,20 +163,18 @@ function spinOff() {
 }
 
 (function(){
-  function Face(img, data, audio) {
+  function Face() {
     if (!(this instanceof Face)) {
       return new Face();
     }
     // インスタンス変数
-    this.img = img;
-    if(data){
-      this.m3_x = data.m3_x;
-      this.m3_y = data.m3_y;
-      this.m7_x = data.m7_x;
-      this.m7_y = data.m7_y;
-      this.f6_y = data.f6_y;
-    }
-    this.audio = audio;
+    this.img;
+    this.m3_x;
+    this.m3_y;
+    this.m7_x;
+    this.m7_y;
+    this.f6_y;
+    this.audio;
   }
   (function(){
     var old_sentence;
@@ -182,12 +184,17 @@ function spinOff() {
       this.img = img;
     }
 
-    this.setPosition = function(m3_x, m3_y, m7_x, m7_y, f6_y) {
-      this.m3_x = m3_x;
-      this.m3_y = m3_y;
-      this.m7_x = m7_x;
-      this.m7_y = m7_y;
-      this.f6_y = f6_y;
+    this.setPosition = function(data) {
+      this.m3_x = data.m3_x;
+      this.m3_y = data.m3_y;
+      this.m7_x = data.m7_x;
+      this.m7_y = data.m7_y;
+      this.f6_y = data.f6_y;
+    }
+    
+    this.setAudio = function(audio) {
+        this.audio = audio;
+        this.audio.addEventListener('ended', function(){stopMouth()});
     }
 
     this.checkSpeak = function() {
@@ -241,21 +248,15 @@ function spinOff() {
       // 文字列に変更がなければ、もう一度再生
       if(this.audio && (sentence == false || sentence == old_sentence)) {
         this.audio.play();
-        console.log("old_audio_play");
       } else{
         sendSpeakWebApi(sentence);
-        console.log("new_audio_play");
       } 
     }
 
     /** speakのコールバック処理 */
     this.playAudioCallback = function (response){
-      console.log("playAudioCallback_start!!");
-
-      this.audio = new Audio(response);
-      this.audio.addEventListener('ended', function(){stopMouth()});
+      this.setAudio(new Audio(response))
       this.audio.play();
-      console.log("playAudioCallback_end!!");
     } 
 
     this.speak = function() {
@@ -264,13 +265,9 @@ function spinOff() {
     }
 
     function sendSpeakWebApi(sentence) {
-      console.log("sendSpeakWebApi_start!!");
-
       var s = document.createElement("script");
       s.src = "http://api.microsofttranslator.com/V2/Ajax.svc/Speak?oncomplete=Face.prototype.playAudioCallback&appId=Bearer" + " " + encodeURIComponent(access_token) + "&text=" + encodeURIComponent(sentence) + "&language=" + language + "&format=" + format;
       document.getElementsByTagName("head")[0].appendChild(s);
-
-      console.log("sendSpeakWebApi_end!!");
     }
 
     function moveMouth(obj) {
