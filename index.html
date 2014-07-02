@@ -45,12 +45,13 @@
     </style>
   </head>
   <body>
+    <!-- operation_view -->
     <div id="operation_view" class="container">
       <div class="masthead">
         <h3 class="text-muted">syabikuri</h3>
       </div>
       <div class="jumbotron" style="background-image:url(images/jumbotron-bg.jpg)">
-        <div style="max-width:700px;"><h1>しゃべくり写真でザワつかせよう！</h1></div>
+        <div style="max-width:700px;"><h1>しゃべくり写真を作ってザワつかせよう！</h1></div>
         <div text-align="center"><input type="button" id="sample" class="btn btn-warning" style="font-size: 16px;" value="サンプルをみる" ></div>
       </div>
       <div class="row">
@@ -58,12 +59,15 @@
         <div class="col-lg-4">
           <div>
             <form id="upload-form" method="post" enctype="multipart/form-data" onSubmit="return upload(this);">
+              <button type="button" class="btn btn-link" style="font-size: 18px; padding-left: 0px;" onclick="$('#one_point_modal').modal('show');">はじめてのかたはこちらをご覧ください</button>
+              <br/>
+              <br/>
               <input id="take_picture_front" type="button" style="font-size: 24px;" class="btn" value="写真を選ぶ">
               <input id="take_picture_back" type="file" name="imgFace" accept="image/*" capture="camera" style="display: none;">
               <input type="hidden" name="limitOfReliability" value="0.5">
               <input id="send" type="submit" name="submit" style="display: none">
             </form>
-            </br>
+            <br/>
             <span style="font-size: 150px; color: #336699;" class="glyphicon glyphicon-user"></span>
             <span id="spin">&nbsp;</span>
             <span id="picture_ok" style="font-size: 40px; color: #66cc00; display: none;" class="glyphicon glyphicon-ok"></span>
@@ -76,6 +80,8 @@
         <div class="col-lg-4">&nbsp;</div>
       </div>
     </div>
+
+    <!-- face_view -->
     <div id="face_view" style="display: none;">
       <canvas id="mouth_bg" style="z-index: 1;"></canvas>
       <canvas id="moving_mouth" style="z-index: 2;"></canvas>
@@ -87,12 +93,37 @@
       </button>
     </div>
 
+    <!-- modal -->
+    <div id="one_point_modal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign" style="color: lightGray;"></span></h4>
+          </div>
+          <div class="modal-body">
+            <h3>申し訳ありませんが写真を選ぶにはちょっとしたコツが必要です。以下のような写真を登録してください。</h3>
+            <br/>
+            <h3>良い例</h3>
+            <h4>・写っているのは１人で、正面を向いて口を閉じている</h4>
+            <img src="images/ok.jpg">
+            <h3>悪い例</h3>
+            <h4>・人大杉</h4>
+            <img src="images/ng1.jpg">
+            <h4>・口空いちゃってるよ</h4>
+            <img src="images/ng2.jpg">
+            <h4>・横向いてるやん</h4>
+            <img src="images/ng3.jpg">
+          </div>
+        </div>
+      </div>
+    </div>
     <div id="non_support_modal" class="modal fade">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"></span></h4>
+            <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign" style="color: lightGray;"></span></h4>
           </div>
           <div class="modal-body">
             <h2>申し訳ありませんが、今のところタブレット、スマートフォンには対応していません。サンプルは確認することが可能です。</h2>
@@ -105,7 +136,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"></span></h4>
+            <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign" style="color: lightGray;"></span></h4>
           </div>
           <div class="modal-body">
             <h4>申し訳ありませんが、アップロードできるファイルは2MBまでになります。</h4>
@@ -118,7 +149,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"></span></h4>
+            <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign" style="color: lightGray;"></span></h4>
           </div>
           <div class="modal-body">
             <h4>顔認識しにくい写真のようです。</h4>
@@ -140,7 +171,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"></span></h4>
+            <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign" style="color: lightGray;"></span></h4>
           </div>
           <div class="modal-body">
             <h4>顔認識がうまくできませんでした。申し訳ありませんが、もう一度試してみてください。繰り返し失敗するようなら他の写真を選んでみてください。</h4>
