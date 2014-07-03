@@ -56,11 +56,11 @@ function setBind(){
   });
     
   $("#sample").bind("click",function(){
-    var sample_face = new Face();
-    sample_face.setImage(sample_img);
-    sample_face.setPosition(sample_position);
-    sample_face.setAudio(sample_audio);
-    sample_face.speak();
+    face = new Face();
+    face.setImage(sample_img);
+    face.setPosition(sample_position);
+    face.setAudio(sample_audio);
+    face.speak();
       
     $("#operation_view").css("display", "none");
     scrollTo(0, 0);
